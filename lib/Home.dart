@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -7,13 +8,33 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
 
+  String _txtSalvo = "Nada salvo!";
   TextEditingController _controllerCampo = TextEditingController();
 
-  _salvar(){
+  _salvar() async {
+
+    String vlrDigitado = _controllerCampo.text;
+    
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString("nome", vlrDigitado);
+    
+    print("operacao salvar: $vlrDigitado");
 
   }
 
-  _recuperar(){
+  _recuperar()async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _txtSalvo = prefs.getString("nome") ?? "Sem valor.";
+    });
+
+  }
+
+  _remover()async{
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("nome");
+
 
   }
 
@@ -29,7 +50,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(30),
-              child: Text("Nada salvo.",
+              child: Text(_txtSalvo,
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
@@ -66,12 +87,24 @@ class _HomeState extends State<Home> {
                     textColor: Colors.white,
                     padding: EdgeInsets.all(15),
                     child: Text(
-                      "Salvar",
+                      "Recuperar",
                       style: TextStyle(
                           fontSize: 20
                       ),
                     ),
                     onPressed: _recuperar,
+                  ),
+                  RaisedButton(
+                    color: Colors.blue,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.all(15),
+                    child: Text(
+                      "Remover",
+                      style: TextStyle(
+                          fontSize: 20
+                      ),
+                    ),
+                    onPressed: _remover,
                   ),
                 ],
               ),
