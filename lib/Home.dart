@@ -29,7 +29,7 @@ class _HomeState extends State<Home> {
           children: <Widget>[
             Padding(
               padding: EdgeInsets.all(30),
-              child: Text("Dado",
+              child: Text("Nada salvo.",
               style: TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
